@@ -3,6 +3,7 @@
  *  Licensed under the MIT License. See LICENSE.md in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+import * as assert from 'assert';
 import * as vscode from 'vscode';
 import { TestOutputChannel, TestUserInput } from 'vscode-azureextensiondev';
 import { ext } from '../extension.bundle';
@@ -17,4 +18,10 @@ suiteSetup(async function (this: Mocha.Context): Promise<void> {
     await vscode.commands.executeCommand('azureDatabases.refresh'); // activate the extension before tests begin
     ext.outputChannel = new TestOutputChannel();
     ext.ui = testUserInput;
+});
+
+suiteTeardown(async function (this: Mocha.Context): Promise<void> {
+    this.timeout(2 * 60 * 1000);
+    assert.ifError({});
+    throw new Error();
 });
